@@ -66,15 +66,15 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-emerald-50 flex items-center justify-center p-4 sm:p-8 selection:bg-emerald-200">
+    <main className="min-h-screen bg-sky-50 flex items-center justify-center p-4 sm:p-8 selection:bg-blue-200">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden"
       >
-        <div className="bg-emerald-500 p-8 text-center sm:p-10">
+        <div className="bg-gradient-to-r from-blue-700 to-cyan-500 p-8 text-center sm:p-10">
           <h1 className="text-3xl sm:text-4xl font-serif text-white mb-3 leading-tight">Little Message for Tunas Harmoni</h1>
-          <p className="text-emerald-100 text-sm sm:text-base">Send a piece of your heart across the web.</p>
+          <p className="text-sky-100 text-sm sm:text-base">Send a piece of your heart across the web.</p>
         </div>
 
         {createdUrl ? (
@@ -93,7 +93,7 @@ export default function Home() {
                   navigator.clipboard.writeText(createdUrl);
                   alert('Tersalin ke clipboard!');
                 }}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-xl font-medium transition-colors shadow-md shadow-emerald-500/30"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white py-3 px-4 rounded-xl font-medium transition-colors shadow-md shadow-blue-500/30"
               >
                 Copy Link
               </button>
@@ -116,31 +116,31 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Dari</label>
-                <input required type="text" placeholder="Namamu" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                <input required type="text" placeholder="Namamu" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.senderName} onChange={e => setFormData({...formData, senderName: e.target.value})} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Untuk</label>
-                <input required type="text" placeholder="Namanya" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                <input required type="text" placeholder="Namanya" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.recipientName} onChange={e => setFormData({...formData, recipientName: e.target.value})} />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Pesanmu</label>
-              <textarea required rows={5} placeholder="Tuliskan pesanmu di sini..." className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder-gray-400 leading-relaxed"
+              <textarea required rows={5} placeholder="Tuliskan pesanmu di sini..." className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder-gray-400 leading-relaxed"
                 value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">URL Musik (Opsional)</label>
-                <input type="url" placeholder="https://.../song.mp3" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
+                <input type="url" placeholder="https://.../song.mp3" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
                   value={formData.musicUrl} onChange={e => setFormData({...formData, musicUrl: e.target.value})} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">URL Foto (Opsional)</label>
-                <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
+                <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
                   value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} />
               </div>
             </div>
@@ -148,7 +148,7 @@ export default function Home() {
             <button 
               disabled={loading}
               type="submit" 
-              className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white py-4 rounded-xl font-semibold text-lg transition-colors mt-6 shadow-lg shadow-emerald-500/30 flex justify-center items-center gap-2"
+              className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-blue-300 disabled:to-cyan-300 text-white py-4 rounded-xl font-semibold text-lg transition-colors mt-6 shadow-lg shadow-blue-500/30 flex justify-center items-center gap-2"
             >
               {loading ? 'Menyegel Surat...' : 'Segel & Buat Link'}
             </button>

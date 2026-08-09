@@ -87,12 +87,12 @@ export default function LetterPage() {
   const isMp3 = letter && letter.music_url && !spotifyEmbedUrl;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative selection:bg-emerald-200">
+    <main className="min-h-screen bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative selection:bg-cyan-200">
       
       {isMp3 && isOpened && (
         <button 
           onClick={toggleAudio}
-          className="fixed top-6 right-6 z-50 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg text-emerald-600 hover:bg-white transition-all"
+          className="fixed top-6 right-6 z-50 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg text-blue-600 hover:bg-white transition-all"
         >
           {isPlaying ? <Pause size={24} /> : <Play size={24} />}
         </button>
@@ -107,8 +107,8 @@ export default function LetterPage() {
             className="w-full"
           >
             <div className="text-center mb-8">
-              <p className="text-emerald-700/60 uppercase tracking-widest text-sm mb-2">You received a letter</p>
-              <p className="text-sm text-emerald-500 animate-pulse font-medium">Tap the envelope to open</p>
+              <p className="text-cyan-700/60 uppercase tracking-widest text-sm mb-2">You received a letter</p>
+              <p className="text-sm text-cyan-600 animate-pulse font-medium">Tap the envelope to open</p>
             </div>
             <Envelope 
               senderName={letter.sender_name} 
@@ -123,14 +123,14 @@ export default function LetterPage() {
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-[#fafffb] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] p-8 sm:p-12 border border-emerald-100 relative"
+            className="w-full max-w-2xl bg-[#fafffb] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,100,200,0.1)] p-8 sm:p-12 border border-cyan-100 relative"
           >
             {/* Dekorasi Kertas */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none opacity-30" style={{ backgroundImage: 'radial-gradient(#10b981 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(#0ea5e9 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
             <div className="mb-12 text-center relative z-10">
-              <h1 className="text-3xl sm:text-5xl font-serif text-gray-800 mb-4 drop-shadow-sm leading-tight sm:leading-tight">Dearest {letter.recipient_name},</h1>
-              <div className="w-24 h-1 bg-emerald-200 mx-auto rounded-full"></div>
+              <h1 className="text-3xl sm:text-5xl font-serif text-blue-900 mb-4 drop-shadow-sm leading-tight sm:leading-tight">Dearest {letter.recipient_name},</h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-300 mx-auto rounded-full"></div>
             </div>
 
             {letter.image_url && (
@@ -141,21 +141,21 @@ export default function LetterPage() {
               </div>
             )}
 
-            <div className="prose prose-emerald max-w-none relative z-10 mt-8 mb-12">
+            <div className="prose prose-cyan max-w-none relative z-10 mt-8 mb-12">
               <p className="text-gray-700 leading-loose font-serif text-lg sm:text-xl whitespace-pre-wrap break-words">
                 {letter.content}
               </p>
             </div>
 
             <div className="mt-16 text-right relative z-10">
-              <p className="text-emerald-500 font-serif italic mb-3 text-lg">Yours truly,</p>
-              <p className="text-3xl font-serif text-gray-800 font-bold leading-tight">{letter.sender_name}</p>
+              <p className="text-cyan-600 font-serif italic mb-3 text-lg">Yours truly,</p>
+              <p className="text-3xl font-serif text-blue-900 font-bold leading-tight">{letter.sender_name}</p>
             </div>
 
             {spotifyEmbedUrl && (
-              <div className="mt-16 pt-8 border-t border-emerald-100 relative z-10">
-                <p className="text-xs text-center text-emerald-500 uppercase tracking-widest font-semibold mb-4">Dedicated Song</p>
-                <div className="bg-white/50 backdrop-blur p-2 rounded-2xl shadow-sm border border-emerald-50">
+              <div className="mt-16 pt-8 border-t border-cyan-100 relative z-10">
+                <p className="text-xs text-center text-cyan-600 uppercase tracking-widest font-semibold mb-4">Dedicated Song</p>
+                <div className="bg-white/50 backdrop-blur p-2 rounded-2xl shadow-sm border border-cyan-50">
                   <iframe 
                     style={{ borderRadius: '12px' }} 
                     src={spotifyEmbedUrl} 
