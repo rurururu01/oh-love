@@ -45,11 +45,14 @@ export default function LetterPage() {
     };
   }, [slug]);
 
-  const handleOpenLetter = () => {
-    setIsOpened(true);
+  const handleStartOpening = () => {
     if (audioRef.current) {
       audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.log('Audio play failed', e));
     }
+  };
+
+  const handleOpenLetter = () => {
+    setIsOpened(true);
   };
 
   const toggleAudio = () => {
@@ -98,6 +101,7 @@ export default function LetterPage() {
             <Envelope 
               senderName={letter.sender_name} 
               recipientName={letter.recipient_name} 
+              onStartOpen={handleStartOpening}
               onOpen={handleOpenLetter} 
             />
           </motion.div>

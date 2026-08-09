@@ -7,13 +7,16 @@ interface EnvelopeProps {
   recipientName: string;
   senderName: string;
   onOpen: () => void;
+  onStartOpen?: () => void;
 }
 
-export default function Envelope({ recipientName, senderName, onOpen }: EnvelopeProps) {
+export default function Envelope({ recipientName, senderName, onOpen, onStartOpen }: EnvelopeProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
+    if (isOpen) return; // Mencegah klik ganda
     setIsOpen(true);
+    if (onStartOpen) onStartOpen();
     setTimeout(() => {
       onOpen();
     }, 1000);
