@@ -20,7 +20,7 @@ export default function LetterPage() {
 
   const getSpotifyEmbedUrl = (url: string | null) => {
     if (!url) return null;
-    const match = url.match(/spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
+    const match = url.match(/(track|playlist|album)\/([a-zA-Z0-9]+)/);
     if (match) {
       return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
     }
