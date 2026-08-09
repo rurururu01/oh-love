@@ -69,16 +69,28 @@ export default function Home() {
               {createdUrl}
             </div>
             
-            <button 
-              onClick={() => {
-                navigator.clipboard.writeText(createdUrl);
-                alert('Tersalin ke clipboard!');
-              }}
-              className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-medium transition-colors shadow-md shadow-red-500/30"
-            >
-              Copy Link
-            </button>
-            <button onClick={() => setCreatedUrl('')} className="mt-4 text-sm text-gray-500 hover:text-gray-800">
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(createdUrl);
+                  alert('Tersalin ke clipboard!');
+                }}
+                className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-medium transition-colors shadow-md shadow-red-500/30"
+              >
+                Copy Link
+              </button>
+
+              <a 
+                href={`https://wa.me/?text=${encodeURIComponent(`Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${createdUrl}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-medium transition-colors shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
+              >
+                Kirim via WhatsApp
+              </a>
+            </div>
+
+            <button onClick={() => setCreatedUrl('')} className="mt-6 text-sm text-gray-500 hover:text-gray-800 w-full text-center">
               Buat surat lagi
             </button>
           </div>
