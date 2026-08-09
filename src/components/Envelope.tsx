@@ -25,7 +25,7 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
   return (
     <div className="relative w-full max-w-md mx-auto aspect-[4/3] cursor-pointer" onClick={handleOpen}>
       {/* Bagian Bawah/Belakang Amplop */}
-      <div className="absolute inset-0 bg-red-200 rounded-xl shadow-lg border-2 border-red-300 flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-emerald-200 rounded-xl shadow-lg border-2 border-emerald-300 flex items-center justify-center overflow-hidden">
         
         {/* Kertas Surat Menyembul */}
         <motion.div 
@@ -34,19 +34,19 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
           animate={{ y: isOpen ? -60 : 20 }}
           transition={{ duration: 0.5, delay: isOpen ? 0.3 : 0 }}
         >
-           <p className="text-red-300 font-serif text-sm">A letter for {recipientName}...</p>
+           <p className="text-emerald-500 font-serif text-sm">A letter for {recipientName}...</p>
         </motion.div>
 
         {/* Tulisan di Amplop */}
         <div className="absolute z-30 text-center pointer-events-none mt-12">
-          <h2 className="text-2xl font-serif text-red-900 font-semibold mb-1">To: {recipientName}</h2>
-          <p className="text-red-700/80 text-sm">From: {senderName}</p>
+          <h2 className="text-2xl font-serif text-emerald-900 font-semibold mb-1">To: {recipientName}</h2>
+          <p className="text-emerald-700/80 text-sm">From: {senderName}</p>
         </div>
       </div>
 
       {/* Flap (Penutup) Amplop Bagian Atas */}
       <motion.div
-        className="absolute top-0 w-full h-1/2 bg-red-300 rounded-t-xl origin-top border-b border-red-400 z-20"
+        className="absolute top-0 w-full h-1/2 bg-emerald-300 rounded-t-xl origin-top border-b border-emerald-400 z-20"
         style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}
         initial={{ rotateX: 0 }}
         animate={{ rotateX: isOpen ? 180 : 0 }}
@@ -55,7 +55,7 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
       
       {/* Stiker Segel Hati */}
       <motion.div 
-        className="absolute top-[45%] left-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white text-xl z-30 shadow-md"
+        className="absolute top-[45%] left-1/2 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xl z-30 shadow-md"
         initial={{ x: '-50%', y: '-50%', scale: 1 }}
         animate={{ 
           x: '-50%', 
@@ -66,7 +66,7 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
           scale: isOpen ? { duration: 0.3 } : { repeat: Infinity, duration: 1.5 } 
         }}
       >
-        ❤️
+        🌿
       </motion.div>
     </div>
   );
