@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [createdUrl, setCreatedUrl] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   
   const [formData, setFormData] = useState({
     senderName: '',
@@ -24,6 +25,27 @@ export default function Home() {
     setLoading(true);
 
     const slug = generateSlug();
+    let finalImageUrl = formData.imageUrl;
+
+    if (imageFile) {
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${slug}-${Date.now()}.${fileExt}`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(fileName, imageFile);
+        
+      if (uploadError) {
+        alert('Gagal mengunggah foto: ' + uploadError.message);
+        setLoading(false);
+        return;
+      }
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(fileName);
+        
+      finalImageUrl = publicUrl;
+    }
 
     const { error } = await supabase
       .from('letters')
@@ -34,7 +56,7 @@ export default function Home() {
           recipient_name: formData.recipientName,
           content: formData.content,
           music_url: formData.musicUrl,
-          image_url: formData.imageUrl,
+          image_url: finalImageUrl,
         }
       ]);
 
@@ -145,9 +167,14 @@ export default function Home() {
                   value={formData.musicUrl} onChange={e => setFormData({...formData, musicUrl: e.target.value})} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">URL Foto (Opsional)</label>
-                <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
-                  value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} />
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Foto (Opsional)</label>
+                <div className="space-y-2">
+                  <input type="file" accept="image/*" className="w-full p-2 bg-white border border-gray-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all"
+                    onChange={e => setImageFile(e.target.files?.[0] || null)} />
+                  <p className="text-xs text-gray-400 text-center font-medium">ATAU paste URL gambar:</p>
+                  <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400 disabled:opacity-50 disabled:bg-gray-100"
+                    value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} disabled={!!imageFile} />
+                </div>
               </div>
             </div>
 
