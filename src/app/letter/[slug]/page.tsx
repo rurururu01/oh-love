@@ -19,13 +19,38 @@ export default function LetterPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const getSpotifyEmbedUrl = (url: string | null | undefined) => {
+  const getSpotifyEmbedUrl = (url: string | null) => {
     if (!url) return null;
-    const match = url.match(/(track|playlist|album)\/([a-zA-Z0-9]+)/);
-    if (match) {
-      return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.hostname.includes('spotify.com')) {
+        const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
+        if (pathParts[0] === 'track' && pathParts[1]) {
+          return `https://open.spotify.com/embed/track/${pathParts[1]}?utm_source=generator`;
+        }
+      }
+    } catch (e) {
+      // invalid URL
     }
     return null;
+  };
+
+  const getDirectImageUrl = (url: string | null) => {
+    if (!url) return null;
+    try {
+      // Handle Google Drive links
+      const gdriveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (gdriveMatch && gdriveMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${gdriveMatch[1]}`;
+      }
+      const gdriveOpenMatch = url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
+      if (gdriveOpenMatch && gdriveOpenMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${gdriveOpenMatch[1]}`;
+      }
+    } catch (e) {
+      // invalid URL
+    }
+    return url;
   };
 
   useEffect(() => {
@@ -86,6 +111,7 @@ export default function LetterPage() {
 
   const spotifyEmbedUrl = letter ? getSpotifyEmbedUrl(letter.music_url) : null;
   const isMp3 = letter && letter.music_url && !spotifyEmbedUrl;
+  const displayImageUrl = letter ? getDirectImageUrl(letter.image_url) : null;
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative selection:bg-cyan-200">
@@ -134,10 +160,10 @@ export default function LetterPage() {
               <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-300 mx-auto rounded-full"></div>
             </div>
 
-            {letter.image_url && !imageError && (
+            {displayImageUrl && !imageError && (
               <div className="mb-10 relative z-10 max-w-md mx-auto group">
                 <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={letter.image_url} alt="Memory" className="w-full h-auto object-cover rounded-sm" onError={() => setImageError(true)} />
+                  <img src={displayImageUrl} alt="Memory" className="w-full h-auto object-cover rounded-sm" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
