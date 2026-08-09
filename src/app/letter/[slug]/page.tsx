@@ -18,6 +18,15 @@ export default function LetterPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const getSpotifyEmbedUrl = (url: string | null) => {
+    if (!url) return null;
+    const match = url.match(/spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
+    if (match) {
+      return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
+    }
+    return null;
+  };
+
   useEffect(() => {
     async function fetchLetter() {
       const { data, error } = await supabase
@@ -28,7 +37,7 @@ export default function LetterPage() {
 
       if (!error && data) {
         setLetter(data);
-        if (data.music_url) {
+        if (data.music_url && !getSpotifyEmbedUrl(data.music_url)) {
           audioRef.current = new Audio(data.music_url);
           audioRef.current.loop = true;
         }
@@ -74,10 +83,13 @@ export default function LetterPage() {
     return <div className="min-h-screen flex items-center justify-center bg-pink-50 text-gray-500">Surat tidak ditemukan atau sudah usang.</div>;
   }
 
+  const spotifyEmbedUrl = letter ? getSpotifyEmbedUrl(letter.music_url) : null;
+  const isMp3 = letter && letter.music_url && !spotifyEmbedUrl;
+
   return (
     <main className="min-h-screen bg-pink-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative">
       
-      {letter.music_url && isOpened && (
+      {isMp3 && isOpened && (
         <button 
           onClick={toggleAudio}
           className="fixed top-6 right-6 z-50 bg-white/80 backdrop-blur-md p-3 rounded-full shadow-lg text-red-500 hover:bg-white transition-all"
@@ -134,6 +146,21 @@ export default function LetterPage() {
               <p className="text-gray-500 font-serif italic mb-2">Yours truly,</p>
               <p className="text-2xl font-serif text-gray-800 font-bold">{letter.sender_name}</p>
             </div>
+
+            {spotifyEmbedUrl && (
+              <div className="mt-12 pt-8 border-t border-red-100">
+                <iframe 
+                  style={{ borderRadius: '12px' }} 
+                  src={spotifyEmbedUrl} 
+                  width="100%" 
+                  height="152" 
+                  frameBorder="0" 
+                  allowFullScreen={false}
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                  loading="lazy"
+                ></iframe>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
