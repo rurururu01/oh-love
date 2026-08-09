@@ -108,7 +108,7 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nomor WA Penerima</label>
-                <input type="text" placeholder="Contoh: 081234567890 (Opsional)" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all"
+                <input type="text" placeholder="Contoh: 081234567890 (Opsional)" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.recipientWa} onChange={e => setFormData({...formData, recipientWa: e.target.value})} />
                 <p className="text-xs text-gray-400 mt-1">Bot akan otomatis mengirimkan link ke nomor ini.</p>
               </div>
@@ -116,31 +116,31 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Dari</label>
-                <input required type="text" placeholder="Namamu" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all"
+                <input required type="text" placeholder="Namamu" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.senderName} onChange={e => setFormData({...formData, senderName: e.target.value})} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Untuk</label>
-                <input required type="text" placeholder="Namanya" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all"
+                <input required type="text" placeholder="Namanya" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.recipientName} onChange={e => setFormData({...formData, recipientName: e.target.value})} />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Pesanmu</label>
-              <textarea required rows={5} placeholder="Tuliskan perasaanmu di sini..." className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all resize-none"
+              <textarea required rows={5} placeholder="Tuliskan perasaanmu di sini..." className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder-gray-400"
                 value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">URL Musik (Opsional)</label>
-                <input type="url" placeholder="https://.../song.mp3" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-sm"
+                <input type="url" placeholder="https://.../song.mp3" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
                   value={formData.musicUrl} onChange={e => setFormData({...formData, musicUrl: e.target.value})} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">URL Foto (Opsional)</label>
-                <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-sm"
+                <input type="url" placeholder="https://.../photo.jpg" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none transition-all text-sm text-gray-900 placeholder-gray-400"
                   value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} />
               </div>
             </div>
