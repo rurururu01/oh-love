@@ -18,7 +18,7 @@ export default function LetterPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const getSpotifyEmbedUrl = (url: string | null) => {
+  const getSpotifyEmbedUrl = (url: string | null | undefined) => {
     if (!url) return null;
     const match = url.match(/(track|playlist|album)\/([a-zA-Z0-9]+)/);
     if (match) {
