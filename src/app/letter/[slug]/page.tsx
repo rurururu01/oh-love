@@ -35,6 +35,27 @@ export default function LetterPage() {
     return null;
   };
 
+  const getYoutubeEmbedUrl = (url: string | null | undefined) => {
+    if (!url) return null;
+    try {
+      let videoId = '';
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const urlObj = new URL(url);
+        if (urlObj.hostname.includes('youtu.be')) {
+          videoId = urlObj.pathname.slice(1);
+        } else {
+          videoId = urlObj.searchParams.get('v') || '';
+        }
+      }
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      }
+    } catch (e) {
+      // invalid url
+    }
+    return null;
+  };
+
   const getDirectImageUrl = (url: string | null | undefined) => {
     if (!url) return null;
     try {
@@ -63,7 +84,7 @@ export default function LetterPage() {
 
       if (!error && data) {
         setLetter(data);
-        if (data.music_url && !getSpotifyEmbedUrl(data.music_url)) {
+        if (data.music_url && !getSpotifyEmbedUrl(data.music_url) && !getYoutubeEmbedUrl(data.music_url)) {
           audioRef.current = new Audio(data.music_url);
           audioRef.current.loop = true;
         }
@@ -110,7 +131,8 @@ export default function LetterPage() {
   }
 
   const spotifyEmbedUrl = letter ? getSpotifyEmbedUrl(letter.music_url) : null;
-  const isMp3 = letter && letter.music_url && !spotifyEmbedUrl;
+  const youtubeEmbedUrl = letter ? getYoutubeEmbedUrl(letter.music_url) : null;
+  const isMp3 = letter && letter.music_url && !spotifyEmbedUrl && !youtubeEmbedUrl;
   const displayImageUrl = letter ? getDirectImageUrl(letter.image_url) : null;
 
   return (
@@ -180,18 +202,29 @@ export default function LetterPage() {
             </div>
 
             {spotifyEmbedUrl && (
-              <div className="mt-16 pt-8 border-t border-cyan-100 relative z-10">
-                <p className="text-xs text-center text-cyan-600 uppercase tracking-widest font-semibold mb-4">Dedicated Song</p>
-                <div className="bg-white/50 backdrop-blur p-2 rounded-2xl shadow-sm border border-cyan-50">
+              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-white/30">
+                <iframe 
+                  className="rounded-xl w-full"
+                  src={spotifyEmbedUrl} 
+                  width="100%" 
+                  height="152" 
+                  frameBorder="0" 
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                  loading="lazy"
+                ></iframe>
+              </div>
+            )}
+
+            {youtubeEmbedUrl && (
+              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100">
+                <div className="relative pb-[56.25%] h-0">
                   <iframe 
-                    style={{ borderRadius: '12px' }} 
-                    src={spotifyEmbedUrl} 
-                    width="100%" 
-                    height="152" 
-                    frameBorder="0" 
-                    allowFullScreen={false}
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                    loading="lazy"
+                    src={youtubeEmbedUrl}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
                   ></iframe>
                 </div>
               </div>
