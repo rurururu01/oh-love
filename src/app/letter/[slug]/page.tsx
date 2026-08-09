@@ -14,6 +14,7 @@ export default function LetterPage() {
   const [letter, setLetter] = useState<Letter | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpened, setIsOpened] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -133,10 +134,10 @@ export default function LetterPage() {
               <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-300 mx-auto rounded-full"></div>
             </div>
 
-            {letter.image_url && (
+            {letter.image_url && !imageError && (
               <div className="mb-10 relative z-10 max-w-md mx-auto group">
                 <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={letter.image_url} alt="Memory" className="w-full h-auto object-cover rounded-sm" />
+                  <img src={letter.image_url} alt="Memory" className="w-full h-auto object-cover rounded-sm" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
