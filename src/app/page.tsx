@@ -72,9 +72,15 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden"
       >
-        <div className="bg-gradient-to-r from-blue-700 to-cyan-500 p-8 text-center sm:p-10">
-          <h1 className="text-3xl sm:text-4xl font-sans font-bold text-white mb-3 leading-tight">Little Message for Tunas Harmoni</h1>
-          <p className="text-sky-100 text-sm sm:text-base font-medium">Send a piece of your heart across the web.</p>
+        <div className="relative p-8 text-center sm:p-10 overflow-hidden bg-blue-900">
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-overlay"
+            style={{ backgroundImage: "url('/kkn-bg.jpg')" }}
+          ></div>
+          <div className="relative z-10">
+            <h1 className="text-3xl sm:text-4xl font-sans font-bold text-white mb-3 leading-tight drop-shadow-lg">Little Message for Tunas Harmoni</h1>
+            <p className="text-sky-50 text-sm sm:text-base font-medium drop-shadow-md">Send a piece of your heart</p>
+          </div>
         </div>
 
         {createdUrl ? (
