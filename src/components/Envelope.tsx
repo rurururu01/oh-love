@@ -34,13 +34,13 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
           animate={{ y: isOpen ? -60 : 20 }}
           transition={{ duration: 0.5, delay: isOpen ? 0.3 : 0 }}
         >
-           <p className="text-cyan-600 font-serif text-sm">A letter for {recipientName}...</p>
+           <p className="text-cyan-600 font-sans text-sm font-medium">A letter for {recipientName}...</p>
         </motion.div>
 
         {/* Tulisan di Amplop */}
         <div className="absolute z-30 text-center pointer-events-none mt-12">
-          <h2 className="text-2xl font-serif text-blue-900 font-semibold mb-1">To: {recipientName}</h2>
-          <p className="text-blue-700/80 text-sm">From: {senderName}</p>
+          <h2 className="text-2xl font-sans text-blue-900 font-bold mb-1">To: {recipientName}</h2>
+          <p className="text-blue-700/80 text-sm font-medium">From: {senderName}</p>
         </div>
       </div>
 

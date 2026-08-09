@@ -73,8 +73,8 @@ export default function Home() {
         className="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden"
       >
         <div className="bg-gradient-to-r from-blue-700 to-cyan-500 p-8 text-center sm:p-10">
-          <h1 className="text-3xl sm:text-4xl font-serif text-white mb-3 leading-tight">Little Message for Tunas Harmoni</h1>
-          <p className="text-sky-100 text-sm sm:text-base">Send a piece of your heart across the web.</p>
+          <h1 className="text-3xl sm:text-4xl font-sans font-bold text-white mb-3 leading-tight">Little Message for Tunas Harmoni</h1>
+          <p className="text-sky-100 text-sm sm:text-base font-medium">Send a piece of your heart across the web.</p>
         </div>
 
         {createdUrl ? (

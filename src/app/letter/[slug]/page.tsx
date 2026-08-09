@@ -129,7 +129,7 @@ export default function LetterPage() {
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(#0ea5e9 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
             <div className="mb-12 text-center relative z-10">
-              <h1 className="text-3xl sm:text-5xl font-serif text-blue-900 mb-4 drop-shadow-sm leading-tight sm:leading-tight">Dearest {letter.recipient_name},</h1>
+              <h1 className="text-3xl sm:text-5xl font-sans font-bold text-blue-900 mb-4 drop-shadow-sm leading-tight sm:leading-tight tracking-tight">Dearest {letter.recipient_name},</h1>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-300 mx-auto rounded-full"></div>
             </div>
 
@@ -142,14 +142,14 @@ export default function LetterPage() {
             )}
 
             <div className="prose prose-cyan max-w-none relative z-10 mt-8 mb-12">
-              <p className="text-gray-700 leading-loose font-serif text-lg sm:text-xl whitespace-pre-wrap break-words">
+              <p className="text-gray-700 leading-loose font-sans font-medium text-lg sm:text-xl whitespace-pre-wrap break-words">
                 {letter.content}
               </p>
             </div>
 
             <div className="mt-16 text-right relative z-10">
-              <p className="text-cyan-600 font-serif italic mb-3 text-lg">Yours truly,</p>
-              <p className="text-3xl font-serif text-blue-900 font-bold leading-tight">{letter.sender_name}</p>
+              <p className="text-cyan-600 font-sans font-medium mb-3 text-lg">Yours truly,</p>
+              <p className="text-3xl font-sans text-blue-900 font-bold leading-tight">{letter.sender_name}</p>
             </div>
 
             {spotifyEmbedUrl && (
