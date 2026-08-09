@@ -11,6 +11,7 @@ export default function Home() {
   const [formData, setFormData] = useState({
     senderName: '',
     recipientName: '',
+    recipientWa: '',
     content: '',
     musicUrl: '',
     imageUrl: '',
@@ -37,14 +38,31 @@ export default function Home() {
         }
       ]);
 
-    setLoading(false);
-
-    if (error) {
-      alert('Gagal membuat surat: ' + error.message);
-    } else {
+    if (!error) {
       const baseUrl = window.location.origin;
-      setCreatedUrl(`${baseUrl}/letter/${slug}`);
+      const letterUrl = `${baseUrl}/letter/${slug}`;
+      setCreatedUrl(letterUrl);
+      
+      // Kirim WA via API secara otomatis jika nomor diisi
+      if (formData.recipientWa) {
+        try {
+          await fetch('/api/send-wa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              target: formData.recipientWa,
+              message: `Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${letterUrl}`
+            })
+          });
+        } catch (err) {
+          console.error('Gagal mengirim WA otomatis', err);
+        }
+      }
+    } else {
+      alert('Gagal membuat surat: ' + error.message);
     }
+    
+    setLoading(false);
   };
 
   return (
@@ -79,15 +97,6 @@ export default function Home() {
               >
                 Copy Link
               </button>
-
-              <a 
-                href={`https://wa.me/?text=${encodeURIComponent(`Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${createdUrl}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-medium transition-colors shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
-              >
-                Kirim via WhatsApp
-              </a>
             </div>
 
             <button onClick={() => setCreatedUrl('')} className="mt-6 text-sm text-gray-500 hover:text-gray-800 w-full text-center">
@@ -96,6 +105,14 @@ export default function Home() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-8 space-y-5">
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nomor WA Penerima</label>
+                <input type="text" placeholder="Contoh: 081234567890 (Opsional)" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all"
+                  value={formData.recipientWa} onChange={e => setFormData({...formData, recipientWa: e.target.value})} />
+                <p className="text-xs text-gray-400 mt-1">Bot akan otomatis mengirimkan link ke nomor ini.</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Dari</label>
