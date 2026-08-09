@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { motion } from 'framer-motion';
+import imageCompression from 'browser-image-compression';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -28,23 +29,40 @@ export default function Home() {
     let finalImageUrl = formData.imageUrl;
 
     if (imageFile) {
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${slug}-${Date.now()}.${fileExt}`;
-      const { data, error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(fileName, imageFile);
+      setLoading(true);
+      
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+          initialQuality: 0.8
+        };
+        const compressedFile = await imageCompression(imageFile, options);
+
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${slug}-${Date.now()}.${fileExt}`;
         
-      if (uploadError) {
-        alert('Gagal mengunggah foto: ' + uploadError.message);
+        const { data, error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(fileName, compressedFile);
+          
+        if (uploadError) {
+          alert('Gagal mengunggah foto: ' + uploadError.message);
+          setLoading(false);
+          return;
+        }
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(fileName);
+          
+        finalImageUrl = publicUrl;
+      } catch (error) {
+        alert('Gagal memproses foto: ' + (error as Error).message);
         setLoading(false);
         return;
       }
-      
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(fileName);
-        
-      finalImageUrl = publicUrl;
     }
 
     const { error } = await supabase
