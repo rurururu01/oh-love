@@ -185,7 +185,7 @@ export default function LetterPage() {
             {displayImageUrl && !imageError && (
               <div className="mb-10 relative z-10 max-w-md mx-auto group">
                 <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={displayImageUrl} alt="Memory" className="w-full h-auto object-cover rounded-sm" onError={() => setImageError(true)} />
+                  <img src={displayImageUrl} alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
@@ -224,6 +224,7 @@ export default function LetterPage() {
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
+                    loading="lazy"
                     className="absolute top-0 left-0 w-full h-full"
                   ></iframe>
                 </div>
