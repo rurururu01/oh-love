@@ -19,7 +19,7 @@ export default function LetterPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const getSpotifyEmbedUrl = (url: string | null) => {
+  const getSpotifyEmbedUrl = (url: string | null | undefined) => {
     if (!url) return null;
     try {
       const parsedUrl = new URL(url);
@@ -35,7 +35,7 @@ export default function LetterPage() {
     return null;
   };
 
-  const getDirectImageUrl = (url: string | null) => {
+  const getDirectImageUrl = (url: string | null | undefined) => {
     if (!url) return null;
     try {
       // Handle Google Drive links
