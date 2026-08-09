@@ -113,8 +113,8 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="p-8 space-y-5">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nomor WA Penerima</label>
-                <input type="text" placeholder="Contoh: 081234567890 (Opsional)" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nomor WA Penerima</label>
+                <input required type="text" placeholder="Contoh: 081234567890" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
                   value={formData.recipientWa} onChange={e => setFormData({...formData, recipientWa: e.target.value})} />
                 <p className="text-xs text-gray-400 mt-1">Bot akan otomatis mengirimkan link ke nomor ini.</p>
               </div>
