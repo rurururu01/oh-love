@@ -87,7 +87,7 @@ export default function LetterPage() {
   const isMp3 = letter && letter.music_url && !spotifyEmbedUrl;
 
   return (
-    <main className="min-h-screen bg-pink-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative">
+    <main className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative selection:bg-rose-200">
       
       {isMp3 && isOpened && (
         <button 
@@ -120,45 +120,53 @@ export default function LetterPage() {
         ) : (
           <motion.div
             key="letter-content"
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-[#fcf9f2] rounded-md shadow-2xl p-8 sm:p-12 border border-gray-200"
-            style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '24px 24px' }}
+            className="w-full max-w-2xl bg-[#fffcf9] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] p-8 sm:p-12 border border-rose-100 relative"
           >
-            <div className="mb-10 text-center">
-              <h1 className="text-3xl sm:text-4xl font-serif text-gray-800 mb-2">Dearest {letter.recipient_name},</h1>
+            {/* Dekorasi Kertas */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none opacity-40" style={{ backgroundImage: 'radial-gradient(#f43f5e 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+            
+            <div className="mb-10 text-center relative z-10">
+              <h1 className="text-3xl sm:text-5xl font-serif text-gray-800 mb-2 drop-shadow-sm">Dearest {letter.recipient_name},</h1>
+              <div className="w-24 h-1 bg-rose-200 mx-auto rounded-full mt-4"></div>
             </div>
 
             {letter.image_url && (
-              <div className="mb-8 rounded-xl overflow-hidden shadow-md max-w-md mx-auto transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                <img src={letter.image_url} alt="Memory" className="w-full h-auto object-cover border-4 border-white" />
+              <div className="mb-10 relative z-10 max-w-md mx-auto group">
+                <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
+                  <img src={letter.image_url} alt="Memory" className="w-full h-auto object-cover rounded-sm" />
+                </div>
               </div>
             )}
 
-            <div className="prose prose-red max-w-none">
-              <p className="text-gray-700 leading-relaxed font-serif text-lg whitespace-pre-wrap">
+            <div className="prose prose-rose max-w-none relative z-10">
+              <p className="text-gray-700 leading-loose font-serif text-lg sm:text-xl whitespace-pre-wrap">
                 {letter.content}
               </p>
             </div>
 
-            <div className="mt-16 text-right">
-              <p className="text-gray-500 font-serif italic mb-2">Yours truly,</p>
-              <p className="text-2xl font-serif text-gray-800 font-bold">{letter.sender_name}</p>
+            <div className="mt-16 text-right relative z-10">
+              <p className="text-rose-400 font-serif italic mb-2 text-lg">Yours truly,</p>
+              <p className="text-3xl font-serif text-gray-800 font-bold">{letter.sender_name}</p>
             </div>
 
             {spotifyEmbedUrl && (
-              <div className="mt-12 pt-8 border-t border-red-100">
-                <iframe 
-                  style={{ borderRadius: '12px' }} 
-                  src={spotifyEmbedUrl} 
-                  width="100%" 
-                  height="152" 
-                  frameBorder="0" 
-                  allowFullScreen={false}
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                  loading="lazy"
-                ></iframe>
+              <div className="mt-12 pt-8 border-t border-rose-100 relative z-10">
+                <p className="text-xs text-center text-rose-300 uppercase tracking-widest font-semibold mb-4">Dedicated Song</p>
+                <div className="bg-white/50 backdrop-blur p-2 rounded-2xl shadow-sm border border-rose-50">
+                  <iframe 
+                    style={{ borderRadius: '12px' }} 
+                    src={spotifyEmbedUrl} 
+                    width="100%" 
+                    height="152" 
+                    frameBorder="0" 
+                    allowFullScreen={false}
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                    loading="lazy"
+                  ></iframe>
+                </div>
               </div>
             )}
           </motion.div>
