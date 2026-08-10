@@ -13,7 +13,7 @@ export default function Home() {
   const [formData, setFormData] = useState({
     senderName: '',
     recipientName: '',
-    recipientWa: '',
+    recipientWa: [''],
     content: '',
     musicUrl: '',
     imageUrl: '',
@@ -84,18 +84,21 @@ export default function Home() {
       setCreatedUrl(letterUrl);
       
       // Kirim WA via API secara otomatis jika nomor diisi
-      if (formData.recipientWa) {
-        try {
-          await fetch('/api/send-wa', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              target: formData.recipientWa,
-              message: `Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${letterUrl}`
-            })
-          });
-        } catch (err) {
-          console.error('Gagal mengirim WA otomatis', err);
+      const validNumbers = formData.recipientWa.filter(num => num.trim() !== '');
+      if (validNumbers.length > 0) {
+        for (const waNumber of validNumbers) {
+          try {
+            await fetch('/api/send-wa', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                target: waNumber,
+                message: `Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${letterUrl}`
+              })
+            });
+          } catch (err) {
+            console.error(`Gagal mengirim WA otomatis ke ${waNumber}`, err);
+          }
         }
       }
     } else {
@@ -154,9 +157,42 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nomor WA Penerima</label>
-                <input required type="text" placeholder="Contoh: 081234567890" className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
-                  value={formData.recipientWa} onChange={e => setFormData({...formData, recipientWa: e.target.value})} />
-                <p className="text-xs text-gray-400 mt-1">Bot akan otomatis mengirimkan link ke nomor ini.</p>
+                {formData.recipientWa.map((wa, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <input 
+                      required={index === 0} 
+                      type="text" 
+                      placeholder="Contoh: 081234567890" 
+                      className="w-full p-3 bg-green-50 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                      value={wa} 
+                      onChange={e => {
+                        const newWa = [...formData.recipientWa];
+                        newWa[index] = e.target.value;
+                        setFormData({...formData, recipientWa: newWa});
+                      }} 
+                    />
+                    {formData.recipientWa.length > 1 && (
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const newWa = formData.recipientWa.filter((_, i) => i !== index);
+                          setFormData({...formData, recipientWa: newWa});
+                        }}
+                        className="p-3 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-colors shrink-0 font-bold"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button 
+                  type="button"
+                  onClick={() => setFormData({...formData, recipientWa: [...formData.recipientWa, '']})}
+                  className="mt-1 text-sm text-green-600 font-semibold hover:text-green-700 flex items-center gap-1 transition-colors"
+                >
+                  + Tambah Nomor
+                </button>
+                <p className="text-xs text-gray-400 mt-2">Bot akan otomatis mengirimkan link ke nomor-nomor ini.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
