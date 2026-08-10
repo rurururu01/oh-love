@@ -13,12 +13,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Fonnte Token is missing in environment variables' }, { status: 500 });
     }
 
+    const targetCount = target.split(',').length;
+    if (targetCount > 25) {
+      return NextResponse.json({ error: 'Maksimal 25 nomor dalam satu pengiriman' }, { status: 400 });
+    }
+
     const formData = new FormData();
     formData.append('target', target);
     formData.append('message', message);
     
-    // Opsional: tambahkan delay jika mengirim ke banyak nomor
-    // formData.append('delay', '2'); 
+    // Beri delay 2-3 detik jika mengirim ke lebih dari 1 nomor untuk menghindari blokir spam WA
+    if (targetCount > 1) {
+      formData.append('delay', '3'); 
+    }
 
     const response = await fetch('https://api.fonnte.com/send', {
       method: 'POST',

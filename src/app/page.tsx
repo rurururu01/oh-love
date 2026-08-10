@@ -86,19 +86,17 @@ export default function Home() {
       // Kirim WA via API secara otomatis jika nomor diisi
       const validNumbers = formData.recipientWa.filter(num => num.trim() !== '');
       if (validNumbers.length > 0) {
-        for (const waNumber of validNumbers) {
-          try {
-            await fetch('/api/send-wa', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                target: waNumber,
-                message: `Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${letterUrl}`
-              })
-            });
-          } catch (err) {
-            console.error(`Gagal mengirim WA otomatis ke ${waNumber}`, err);
-          }
+        try {
+          await fetch('/api/send-wa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              target: validNumbers.join(','), // Gabungkan nomor dengan koma
+              message: `Ada surat cinta digital untukmu dari ${formData.senderName}! 💌 Buka di sini: ${letterUrl}`
+            })
+          });
+        } catch (err) {
+          console.error(`Gagal mengirim WA otomatis`, err);
         }
       }
     } else {
@@ -185,13 +183,15 @@ export default function Home() {
                     )}
                   </div>
                 ))}
-                <button 
-                  type="button"
-                  onClick={() => setFormData({...formData, recipientWa: [...formData.recipientWa, '']})}
-                  className="mt-1 text-sm text-green-600 font-semibold hover:text-green-700 flex items-center gap-1 transition-colors"
-                >
-                  + Tambah Nomor
-                </button>
+                {formData.recipientWa.length < 25 && (
+                  <button 
+                    type="button"
+                    onClick={() => setFormData({...formData, recipientWa: [...formData.recipientWa, '']})}
+                    className="mt-1 text-sm text-green-600 font-semibold hover:text-green-700 flex items-center gap-1 transition-colors"
+                  >
+                    + Tambah Nomor ({formData.recipientWa.length}/25)
+                  </button>
+                )}
                 <p className="text-xs text-gray-400 mt-2">Bot akan otomatis mengirimkan link ke nomor-nomor ini.</p>
               </div>
             </div>
