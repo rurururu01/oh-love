@@ -34,7 +34,14 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
           animate={{ y: isOpen ? -60 : 20 }}
           transition={{ duration: 0.5, delay: isOpen ? 0.3 : 0 }}
         >
-           <p className="text-cyan-600 font-sans text-sm font-medium mb-12">A letter for {recipientName}...</p>
+           <motion.p 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: isOpen ? 1 : 0 }}
+             transition={{ duration: 0.3, delay: isOpen ? 0.5 : 0 }}
+             className="text-cyan-600 font-sans text-sm font-medium mb-12"
+           >
+             A letter for {recipientName}...
+           </motion.p>
         </motion.div>
 
         {/* Tulisan di Amplop */}
@@ -53,9 +60,9 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
       />
       
-      {/* Stiker Segel Hati diganti Daun */}
+      {/* Stiker Segel Hati */}
       <motion.div 
-        className="absolute top-[45%] left-1/2 w-12 h-12 bg-lime-500 rounded-full flex items-center justify-center text-white text-xl z-30 shadow-md"
+        className="absolute top-[45%] left-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white text-xl z-30 shadow-md"
         initial={{ x: '-50%', y: '-50%', scale: 1 }}
         animate={{ 
           x: '-50%', 
@@ -66,7 +73,7 @@ export default function Envelope({ recipientName, senderName, onOpen, onStartOpe
           scale: isOpen ? { duration: 0.3 } : { repeat: Infinity, duration: 1.5 } 
         }}
       >
-        🌿
+        ❤️
       </motion.div>
     </div>
   );
