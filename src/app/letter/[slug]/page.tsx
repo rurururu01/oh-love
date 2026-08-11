@@ -15,6 +15,7 @@ export default function LetterPage() {
   const [loading, setLoading] = useState(true);
   const [isOpened, setIsOpened] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [musicTitle, setMusicTitle] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -101,9 +102,21 @@ export default function LetterPage() {
 
       if (!error && data) {
         setLetter(data);
-        if (data.music_url && !getSpotifyEmbedUrl(data.music_url) && !getYoutubeEmbedUrl(data.music_url)) {
-          audioRef.current = new Audio(data.music_url);
-          audioRef.current.loop = true;
+        if (data.music_url) {
+          if (!getSpotifyEmbedUrl(data.music_url) && !getYoutubeEmbedUrl(data.music_url)) {
+            audioRef.current = new Audio(data.music_url);
+            audioRef.current.loop = true;
+          } else {
+            try {
+              const res = await fetch(`/api/oembed?url=${encodeURIComponent(data.music_url)}`);
+              if (res.ok) {
+                const oembedData = await res.json();
+                if (oembedData.title) setMusicTitle(oembedData.title);
+              }
+            } catch (e) {
+              console.error('Failed to fetch music title', e);
+            }
+          }
         }
       }
       setLoading(false);
@@ -251,7 +264,7 @@ export default function LetterPage() {
                 {/* Fallback for html2canvas */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-green-500 font-bold z-0">
                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.712 1.115.293.18.386.563.207.856zm1.226-2.736c-.226.368-.7.484-1.07.256-2.686-1.65-6.785-2.13-9.965-1.166-.412.126-.84-.106-.966-.518-.126-.412.106-.84.518-.965 3.632-1.103 8.16-.566 11.228 1.32.368.227.484.7.255 1.073zm.135-2.863c-3.21-1.905-8.498-2.08-11.554-1.15-.494.15-1.015-.128-1.166-.622-.15-.494.128-1.014.622-1.165 3.518-1.07 9.356-.867 13.06 1.332.443.262.59.835.328 1.278-.263.443-.836.59-1.29.327z"/></svg>
-                   <span className="mt-2 text-sm text-gray-300">Spotify Track</span>
+                   <span className="mt-2 text-sm text-gray-300 px-4 text-center">{musicTitle || "Spotify Track"}</span>
                 </div>
                 {/* Real iframe, ignored by html2canvas */}
                 <iframe 
@@ -273,7 +286,7 @@ export default function LetterPage() {
                   {/* Fallback for html2canvas */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-red-500 font-bold bg-gray-900 z-0">
                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M21.582 6.186a2.506 2.506 0 00-1.762-1.766C18.265 4 12 4 12 4s-6.264 0-7.82.42a2.506 2.506 0 00-1.76 1.766C2 7.74 2 12 2 12s0 4.26.42 5.814a2.506 2.506 0 001.76 1.766C5.736 20 12 20 12 20s6.265 0 7.82-.42a2.506 2.506 0 001.762-1.766C22 16.26 22 12 22 12s0-4.26-.418-5.814zM9.993 15.582v-7.146l6.236 3.573-6.236 3.573z"/></svg>
-                     <span className="mt-2 text-sm text-gray-300">YouTube Video</span>
+                     <span className="mt-2 text-sm text-gray-300 px-4 text-center">{musicTitle || "YouTube Video"}</span>
                   </div>
                   {/* Real iframe, ignored by html2canvas */}
                   <iframe 
