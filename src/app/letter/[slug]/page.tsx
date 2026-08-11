@@ -232,37 +232,37 @@ export default function LetterPage() {
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-[#fafffb] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,100,200,0.1)] p-8 sm:p-12 border border-cyan-100 relative"
+            className="w-full max-w-2xl bg-[#fafffb] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,100,200,0.1)] p-6 sm:p-8 border border-cyan-100 relative"
           >
             {/* Dekorasi Kertas */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(#0ea5e9 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
-            <div className="mb-12 text-center relative z-10">
-              <h1 className="text-3xl sm:text-5xl font-sans font-bold text-blue-900 mb-4 drop-shadow-sm leading-tight sm:leading-tight tracking-tight">Dearest {letter.recipient_name},</h1>
+            <div className="mb-6 text-center relative z-10">
+              <h1 className="text-2xl sm:text-4xl font-sans font-bold text-blue-900 mb-2 drop-shadow-sm leading-tight sm:leading-tight tracking-tight">Dearest {letter.recipient_name},</h1>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-300 mx-auto rounded-full"></div>
             </div>
 
             {displayImageUrl && !imageError && (
-              <div className="mb-10 relative z-10 max-w-md mx-auto group">
-                <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
+              <div className="mb-6 relative z-10 max-w-sm mx-auto group">
+                <div className="bg-white p-3 sm:p-4 pb-8 sm:pb-10 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
                   <img src={displayImageUrl} crossOrigin="anonymous" alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
 
-            <div className="prose prose-cyan max-w-none relative z-10 mt-8 mb-12">
-              <p className="text-gray-700 leading-loose font-sans font-medium text-lg sm:text-xl whitespace-pre-wrap break-words">
+            <div className="prose prose-cyan max-w-none relative z-10 mt-6 mb-6">
+              <p className="text-gray-700 leading-relaxed font-sans font-medium text-base sm:text-lg whitespace-pre-wrap break-words">
                 {letter.content}
               </p>
             </div>
 
-            <div className="mt-16 text-right relative z-10">
-              <p className="text-cyan-600 font-sans font-medium mb-3 text-lg">Yours truly,</p>
-              <p className="text-3xl font-sans text-blue-900 font-bold leading-tight">{letter.sender_name}</p>
+            <div className="mt-8 text-right relative z-10">
+              <p className="text-cyan-600 font-sans font-medium mb-1 text-base">Yours truly,</p>
+              <p className="text-2xl font-sans text-blue-900 font-bold leading-tight">{letter.sender_name}</p>
             </div>
 
             {spotifyEmbedUrl && (
-              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-[#282828] min-h-[152px]">
+              <div className="mt-6 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-[#282828] min-h-[152px]">
                 {/* Fallback for html-to-image */}
                 <div className="absolute inset-0 bg-[#282828] z-0 p-3 flex flex-col justify-between overflow-hidden">
                   <div className="flex items-center gap-3">
@@ -308,7 +308,7 @@ export default function LetterPage() {
             )}
 
             {youtubeEmbedUrl && (
-              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 bg-gray-900">
+              <div className="mt-6 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 bg-gray-900">
                 <div className="relative pb-[56.25%] h-0">
                   {/* Fallback for html2canvas */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-red-500 font-bold bg-gray-900 z-0">
