@@ -58,6 +58,21 @@ export default function LetterPage() {
     return null;
   };
 
+  const getYoutubeVideoId = (url: string | null | undefined) => {
+    if (!url) return null;
+    try {
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const urlObj = new URL(url);
+        if (urlObj.hostname.includes('youtu.be')) {
+          return urlObj.pathname.slice(1);
+        } else {
+          return urlObj.searchParams.get('v');
+        }
+      }
+    } catch (e) {}
+    return null;
+  };
+
   const getDirectImageUrl = (url: string | null | undefined) => {
     if (!url) return null;
     try {
@@ -229,22 +244,37 @@ export default function LetterPage() {
             </div>
 
             {spotifyEmbedUrl && (
-              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-white/30">
+              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-[#282828] flex items-center justify-center min-h-[152px]">
+                {/* Fallback for html2canvas */}
+                <div className="absolute text-green-500 font-bold flex flex-col items-center">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.712 1.115.293.18.386.563.207.856zm1.226-2.736c-.226.368-.7.484-1.07.256-2.686-1.65-6.785-2.13-9.965-1.166-.412.126-.84-.106-.966-.518-.126-.412.106-.84.518-.965 3.632-1.103 8.16-.566 11.228 1.32.368.227.484.7.255 1.073zm.135-2.863c-3.21-1.905-8.498-2.08-11.554-1.15-.494.15-1.015-.128-1.166-.622-.15-.494.128-1.014.622-1.165 3.518-1.07 9.356-.867 13.06 1.332.443.262.59.835.328 1.278-.263.443-.836.59-1.29.327z"/></svg>
+                   <span className="mt-2 text-sm text-gray-300">Spotify Track</span>
+                </div>
+                {/* Real iframe, ignored by html2canvas */}
                 <iframe 
-                  className="rounded-xl w-full"
+                  className="rounded-xl w-full relative z-10"
                   src={spotifyEmbedUrl} 
                   width="100%" 
                   height="152" 
                   frameBorder="0" 
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                   loading="lazy"
+                  data-html2canvas-ignore="true"
                 ></iframe>
               </div>
             )}
 
             {youtubeEmbedUrl && (
-              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100">
+              <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 bg-gray-900">
                 <div className="relative pb-[56.25%] h-0">
+                  {/* Thumbnail for html2canvas */}
+                  <img 
+                    src={`https://img.youtube.com/vi/${getYoutubeVideoId(letter.music_url)}/hqdefault.jpg`} 
+                    className="absolute top-0 left-0 w-full h-full object-cover opacity-80"
+                    alt="YouTube Thumbnail" 
+                    crossOrigin="anonymous"
+                  />
+                  {/* Real iframe, ignored by html2canvas */}
                   <iframe 
                     src={youtubeEmbedUrl}
                     title="YouTube video player"
@@ -253,6 +283,7 @@ export default function LetterPage() {
                     allowFullScreen
                     loading="lazy"
                     className="absolute top-0 left-0 w-full h-full"
+                    data-html2canvas-ignore="true"
                   ></iframe>
                 </div>
               </div>
