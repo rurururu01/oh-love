@@ -169,9 +169,54 @@ export default function LetterPage() {
           return !el.hasAttribute?.('data-html2canvas-ignore');
         }
       });
+
+      // Create an image element from the captured data URL
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
+
+      // Calculate 9:16 dimensions
+      const targetRatio = 9 / 16;
+      const imgRatio = img.width / img.height;
+      
+      let canvasWidth = img.width;
+      let canvasHeight = img.height;
+
+      if (imgRatio > targetRatio) {
+        // Image is wider than 9:16 (too short), so we increase height
+        canvasHeight = img.width / targetRatio;
+      } else {
+        // Image is taller than 9:16 (too long), so we increase width
+        canvasWidth = img.height * targetRatio;
+      }
+
+      // Create a canvas with the 9:16 dimensions
+      const canvas = document.createElement('canvas');
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Could not get canvas context');
+
+      // Draw background (matching the website's gradient colors roughly)
+      const gradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+      gradient.addColorStop(0, '#f0f9ff'); // sky-50
+      gradient.addColorStop(0.5, '#ecfeff'); // cyan-50
+      gradient.addColorStop(1, '#eff6ff'); // blue-50
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+      // Draw the captured image centered on the new canvas
+      const x = (canvasWidth - img.width) / 2;
+      const y = (canvasHeight - img.height) / 2;
+      ctx.drawImage(img, x, y);
+
+      const finalDataUrl = canvas.toDataURL('image/png');
+
       const link = document.createElement('a');
       link.download = `surat-dari-${letter?.sender_name || 'seseorang'}.png`;
-      link.href = dataUrl;
+      link.href = finalDataUrl;
       link.click();
     } catch (error) {
       console.error('Error downloading image', error);
