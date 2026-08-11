@@ -17,6 +17,7 @@ export default function LetterPage() {
   const [imageError, setImageError] = useState(false);
   const [musicTitle, setMusicTitle] = useState<string | null>(null);
   const [musicThumbnail, setMusicThumbnail] = useState<string | null>(null);
+  const [proxiedImageUrl, setProxiedImageUrl] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -118,6 +119,26 @@ export default function LetterPage() {
             } catch (e) {
               console.error('Failed to fetch music title', e);
             }
+          }
+        }
+        
+        const directImg = getDirectImageUrl(data.image_url);
+        if (directImg) {
+          try {
+            const res = await fetch(`/api/image-proxy?url=${encodeURIComponent(directImg)}`);
+            if (res.ok) {
+              const proxyData = await res.json();
+              if (proxyData.base64) {
+                setProxiedImageUrl(proxyData.base64);
+              } else {
+                setProxiedImageUrl(directImg);
+              }
+            } else {
+              setProxiedImageUrl(directImg);
+            }
+          } catch (e) {
+            console.error('Failed to proxy image', e);
+            setProxiedImageUrl(directImg);
           }
         }
       }
@@ -290,7 +311,7 @@ export default function LetterPage() {
             {displayImageUrl && !imageError && (
               <div className="mb-6 relative z-10 max-w-sm mx-auto group">
                 <div className="bg-white p-3 sm:p-4 pb-8 sm:pb-10 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={displayImageUrl} crossOrigin="anonymous" alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
+                  <img src={proxiedImageUrl || displayImageUrl} alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
