@@ -309,9 +309,9 @@ export default function LetterPage() {
             </div>
 
             {displayImageUrl && !imageError && (
-              <div className="mb-6 relative z-10 max-w-sm mx-auto group">
-                <div className="bg-white p-3 sm:p-4 pb-8 sm:pb-10 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={proxiedImageUrl || displayImageUrl} alt="Memory" className="w-full aspect-square object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
+              <div className="mb-6 relative z-10 flex justify-center group px-2">
+                <div className="bg-white p-3 sm:p-4 pb-8 sm:pb-10 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100 inline-block max-w-full">
+                  <img src={proxiedImageUrl || displayImageUrl} alt="Memory" className="w-auto max-w-full max-h-64 sm:max-h-80 object-contain rounded-sm" loading="lazy" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
