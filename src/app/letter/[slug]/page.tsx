@@ -16,6 +16,7 @@ export default function LetterPage() {
   const [isOpened, setIsOpened] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [musicTitle, setMusicTitle] = useState<string | null>(null);
+  const [musicThumbnail, setMusicThumbnail] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -112,6 +113,7 @@ export default function LetterPage() {
               if (res.ok) {
                 const oembedData = await res.json();
                 if (oembedData.title) setMusicTitle(oembedData.title);
+                if (oembedData.thumbnail_base64) setMusicThumbnail(oembedData.thumbnail_base64);
               }
             } catch (e) {
               console.error('Failed to fetch music title', e);
@@ -261,10 +263,35 @@ export default function LetterPage() {
 
             {spotifyEmbedUrl && (
               <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 backdrop-blur-md bg-[#282828] min-h-[152px]">
-                {/* Fallback for html2canvas */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-green-500 font-bold z-0">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.712 1.115.293.18.386.563.207.856zm1.226-2.736c-.226.368-.7.484-1.07.256-2.686-1.65-6.785-2.13-9.965-1.166-.412.126-.84-.106-.966-.518-.126-.412.106-.84.518-.965 3.632-1.103 8.16-.566 11.228 1.32.368.227.484.7.255 1.073zm.135-2.863c-3.21-1.905-8.498-2.08-11.554-1.15-.494.15-1.015-.128-1.166-.622-.15-.494.128-1.014.622-1.165 3.518-1.07 9.356-.867 13.06 1.332.443.262.59.835.328 1.278-.263.443-.836.59-1.29.327z"/></svg>
-                   <span className="mt-2 text-sm text-gray-300 px-4 text-center">{musicTitle || "Spotify Track"}</span>
+                {/* Fallback for html-to-image */}
+                <div className="absolute inset-0 bg-[#282828] z-0 p-3 flex flex-col justify-between overflow-hidden">
+                  <div className="flex items-center gap-3">
+                    {musicThumbnail ? (
+                      <img src={musicThumbnail} alt="Album Art" className="w-14 h-14 rounded object-cover shadow-sm" crossOrigin="anonymous" />
+                    ) : (
+                      <div className="w-14 h-14 bg-[#1a1a1a] rounded flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-gray-500"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.712 1.115.293.18.386.563.207.856zm1.226-2.736c-.226.368-.7.484-1.07.256-2.686-1.65-6.785-2.13-9.965-1.166-.412.126-.84-.106-.966-.518-.126-.412.106-.84.518-.965 3.632-1.103 8.16-.566 11.228 1.32.368.227.484.7.255 1.073zm.135-2.863c-3.21-1.905-8.498-2.08-11.554-1.15-.494.15-1.015-.128-1.166-.622-.15-.494.128-1.014.622-1.165 3.518-1.07 9.356-.867 13.06 1.332.443.262.59.835.328 1.278-.263.443-.836.59-1.29.327z"/></svg>
+                      </div>
+                    )}
+                    <div className="flex-1 overflow-hidden">
+                      <p className="text-white font-bold text-sm truncate">{musicTitle || "Spotify Track"}</p>
+                      <button className="mt-1 flex items-center gap-1 text-white border border-[#4d4d4d] rounded-full px-2 py-0.5 hover:bg-[#333] transition-colors">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+                        <span className="text-[10px] font-bold">Save on Spotify</span>
+                      </button>
+                    </div>
+                    <div className="self-start relative z-10 p-1">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#1ed760"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.712 1.115.293.18.386.563.207.856zm1.226-2.736c-.226.368-.7.484-1.07.256-2.686-1.65-6.785-2.13-9.965-1.166-.412.126-.84-.106-.966-.518-.126-.412.106-.84.518-.965 3.632-1.103 8.16-.566 11.228 1.32.368.227.484.7.255 1.073zm.135-2.863c-3.21-1.905-8.498-2.08-11.554-1.15-.494.15-1.015-.128-1.166-.622-.15-.494.128-1.014.622-1.165 3.518-1.07 9.356-.867 13.06 1.332.443.262.59.835.328 1.278-.263.443-.836.59-1.29.327z"/></svg>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-4 w-full">
+                    <span className="text-[10px] text-[#a7a7a7]">0:00</span>
+                    <div className="flex-1 h-1 bg-[#4d4d4d] rounded-full overflow-hidden">
+                      <div className="w-0 h-full bg-white rounded-full"></div>
+                    </div>
+                    <span className="text-[10px] text-[#a7a7a7]">3:53</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" className="ml-1"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="black"/></svg>
+                  </div>
                 </div>
                 {/* Real iframe, ignored by html2canvas */}
                 <iframe 

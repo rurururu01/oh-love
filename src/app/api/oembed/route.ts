@@ -30,6 +30,21 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
+
+    if (data.thumbnail_url) {
+      try {
+        const imgRes = await fetch(data.thumbnail_url);
+        if (imgRes.ok) {
+          const arrayBuffer = await imgRes.arrayBuffer();
+          const base64 = Buffer.from(arrayBuffer).toString('base64');
+          const mimeType = imgRes.headers.get('content-type') || 'image/jpeg';
+          data.thumbnail_base64 = `data:${mimeType};base64,${base64}`;
+        }
+      } catch (imgErr) {
+        console.error('Failed to fetch thumbnail for base64:', imgErr);
+      }
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('oEmbed fetch error:', error);
