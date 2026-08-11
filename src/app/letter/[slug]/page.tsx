@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import Envelope from '@/components/Envelope';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 export default function LetterPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -143,21 +143,24 @@ export default function LetterPage() {
     if (!letterRef.current) return;
     setIsDownloading(true);
     try {
-      const canvas = await html2canvas(letterRef.current, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
+      // Small delay to ensure any layout shifts are done
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const dataUrl = await htmlToImage.toPng(letterRef.current, {
+        cacheBust: true,
         backgroundColor: '#fafffb',
-        ignoreElements: (element) => element.hasAttribute('data-html2canvas-ignore')
+        pixelRatio: 2,
+        filter: (node) => {
+          const el = node as HTMLElement;
+          return !el.hasAttribute?.('data-html2canvas-ignore');
+        }
       });
-      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = `surat-dari-${letter?.sender_name || 'seseorang'}.png`;
       link.href = dataUrl;
       link.click();
     } catch (error) {
       console.error('Error downloading image', error);
-      alert('Gagal menyimpan gambar surat.');
+      alert('Gagal menyimpan gambar surat. Coba screenshot manual jika masih error.');
     } finally {
       setIsDownloading(false);
     }
