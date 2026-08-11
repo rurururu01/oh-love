@@ -227,7 +227,7 @@ export default function LetterPage() {
             {displayImageUrl && !imageError && (
               <div className="mb-10 relative z-10 max-w-md mx-auto group">
                 <div className="bg-white p-3 sm:p-4 pb-12 sm:pb-16 shadow-xl rounded-sm transform -rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-gray-100">
-                  <img src={displayImageUrl} alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
+                  <img src={displayImageUrl} crossOrigin="anonymous" alt="Memory" className="w-full h-auto object-cover rounded-sm" loading="lazy" onError={() => setImageError(true)} />
                 </div>
               </div>
             )}
@@ -267,13 +267,11 @@ export default function LetterPage() {
             {youtubeEmbedUrl && (
               <div className="mt-10 relative z-10 w-full max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-gray-100 bg-gray-900">
                 <div className="relative pb-[56.25%] h-0">
-                  {/* Thumbnail for html2canvas */}
-                  <img 
-                    src={`https://img.youtube.com/vi/${getYoutubeVideoId(letter.music_url)}/hqdefault.jpg`} 
-                    className="absolute top-0 left-0 w-full h-full object-cover opacity-80"
-                    alt="YouTube Thumbnail" 
-                    crossOrigin="anonymous"
-                  />
+                  {/* Fallback for html2canvas */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-red-500 font-bold bg-gray-900">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M21.582 6.186a2.506 2.506 0 00-1.762-1.766C18.265 4 12 4 12 4s-6.264 0-7.82.42a2.506 2.506 0 00-1.76 1.766C2 7.74 2 12 2 12s0 4.26.42 5.814a2.506 2.506 0 001.76 1.766C5.736 20 12 20 12 20s6.265 0 7.82-.42a2.506 2.506 0 001.762-1.766C22 16.26 22 12 22 12s0-4.26-.418-5.814zM9.993 15.582v-7.146l6.236 3.573-6.236 3.573z"/></svg>
+                     <span className="mt-2 text-sm text-gray-300">YouTube Video</span>
+                  </div>
                   {/* Real iframe, ignored by html2canvas */}
                   <iframe 
                     src={youtubeEmbedUrl}
