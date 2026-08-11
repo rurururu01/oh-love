@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import Envelope from '@/components/Envelope';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
-
+import html2canvas from 'html2canvas';
 export default function LetterPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -18,6 +18,8 @@ export default function LetterPage() {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const letterRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const getSpotifyEmbedUrl = (url: string | null | undefined) => {
     if (!url) return null;
@@ -122,6 +124,30 @@ export default function LetterPage() {
     }
   };
 
+  const handleDownload = async () => {
+    if (!letterRef.current) return;
+    setIsDownloading(true);
+    try {
+      const canvas = await html2canvas(letterRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#fafffb',
+        ignoreElements: (element) => element.hasAttribute('data-html2canvas-ignore')
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `surat-dari-${letter?.sender_name || 'seseorang'}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error('Error downloading image', error);
+      alert('Gagal menyimpan gambar surat.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center bg-pink-50 text-red-400">Loading heartbeats...</div>;
   }
@@ -169,6 +195,7 @@ export default function LetterPage() {
         ) : (
           <motion.div
             key="letter-content"
+            ref={letterRef}
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -230,6 +257,16 @@ export default function LetterPage() {
                 </div>
               </div>
             )}
+
+            <div className="mt-12 flex justify-center w-full relative z-10" data-html2canvas-ignore="true">
+              <button
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white py-3 px-8 rounded-full shadow-lg font-medium text-sm transition-colors flex items-center gap-2 disabled:opacity-50"
+              >
+                {isDownloading ? 'Menyimpan...' : '📸 Simpan Surat (Gambar)'}
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
