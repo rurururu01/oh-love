@@ -146,9 +146,7 @@ export default function Home() {
               </button>
             </div>
 
-            <button onClick={() => setCreatedUrl('')} className="mt-6 text-sm text-gray-500 hover:text-gray-800 w-full text-center">
-              Buat surat lagi
-            </button>
+
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-8 space-y-5">
